@@ -8,6 +8,10 @@ exports.search = (request, callback) => {
 		if (err) {
 			callback({code: 404, contentType: 'application/json', response: err})
 		}
+		if (data.items == undefined) {
+			callback({code: 404, contentType: 'application/json', response: 'No Books Found'})
+			return
+		}
 		callback({code: 200, contentType: 'application/json', response: data})
 	})
 }
