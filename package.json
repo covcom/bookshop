@@ -1,0 +1,28 @@
+{
+  "name": "bookshop",
+  "version": "1.0.0",
+  "description": "Simple API to demonstrate REST principles",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/covcom/bookshop.git"
+  },
+  "keywords": [
+    "nodejs",
+    "rest",
+    "api",
+    "javascript"
+  ],
+  "author": "Mark J Tyers",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/covcom/bookshop/issues"
+  },
+  "homepage": "https://github.com/covcom/bookshop#readme",
+  "dependencies": {
+    "restify": "^4.0.3"
+  }
+}
