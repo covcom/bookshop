@@ -4,7 +4,8 @@
   "description": "Simple API to demonstrate REST principles",
   "main": "index.js",
   "scripts": {
-    "start": "node index.js"
+    "start": "node index.js",
+    "test": "./node_modules/.bin/jasmine-node spec/"
   },
   "repository": {
     "type": "git",
@@ -27,5 +28,8 @@
   },
   "engines": {
     "node": "5.1.0"
+  },
+  "devDependencies": {
+    "jasmine-node": "^1.14.5"
   }
 }
