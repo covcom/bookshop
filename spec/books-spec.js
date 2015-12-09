@@ -4,33 +4,36 @@ var rewire = require('rewire')
 
 var books = rewire("../modules/books")
 
+function setData(file) {
+	console.log(file)
+	books.__set__('apiCall', (search, callback) => {
+		const data = fs.readFileSync('spec/data/'+file, "utf8")
+		callback(null, JSON.parse(data))
+	})
+}
+
 describe("Search for a book", () => {
 	
-	var req
-	
-	beforeEach(function() {
-    //
-  })
-	
-	afterEach(function() {
-    //
-  })
-	
 	it('search for a recognised topic', done => {
-		req = {params:{q:'javascript'}}
+		setData('javascript.json')
+		const req = {params:{q:'javascript'}}
+		console.log(req.params.q)
 		expect(req.params.q).toEqual('javascript')
-		books.search(req.params.q, data => {
+		books.search(req, data => {
 			expect(data.code).toEqual(200)
 			expect(data.contentType).toEqual('application/json')
-			expect(data.response).toEqual('Hello World')
+			const books = data.response.items
+			expect(books).toBeDefined()
+			expect(books.length).toBe(3)
 			done()
 		})
 	})
 	
-	xit('search for an unknown topic', done => {
-		req = {params:{q:'dgfuhalgux'}}
-		expect(req.params.q).toBeUndefined()
-		books.search(req.params.q, data => {
+	it('search for an unknown topic', done => {
+		setData('unknown.json')
+		const req = {params:{q:'dgfuhalgux'}}
+		expect(req.params.q).toEqual('dgfuhalgux')
+		books.search(req, data => {
 			expect(data.code).toEqual(404)
 			expect(data.contentType).toEqual('application/json')
 			expect(data.response).toEqual('No Books Found')
@@ -39,8 +42,9 @@ describe("Search for a book", () => {
 	})
 	
 	xit('search with a missing query', done => {
-		req = {params:{}}
-		expect(req.params.q).toBeUndefined()
+		setData('missing.json')
+		const req = {params:{}}
+		expect(req).toBeUndefined()
 		books.search(req.params.q, data => {
 			expect(data.code).toEqual(404)
 			expect(data.contentType).toEqual('application/json')
