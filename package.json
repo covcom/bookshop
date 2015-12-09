@@ -5,7 +5,8 @@
   "main": "index.js",
   "scripts": {
     "start": "node index.js",
-    "test": "./node_modules/.bin/jasmine-node spec/"
+    "test": "./node_modules/.bin/jasmine-node spec/ --color --verbose --noStack --autotest --watch .",
+    "coverage": "./node_modules/.bin/istanbul cover -x **/spec/** -x **index.js** --include-all-sources jasmine-node spec"
   },
   "repository": {
     "type": "git",
@@ -30,6 +31,8 @@
     "node": "5.1.0"
   },
   "devDependencies": {
-    "jasmine-node": "^1.14.5"
+    "istanbul": "^0.4.1",
+    "jasmine-node": "^1.14.5",
+    "rewire": "^2.5.1"
   }
 }

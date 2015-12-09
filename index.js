@@ -5,6 +5,7 @@ const server = restify.createServer()
 
 server.use(restify.fullResponse())
 server.use(restify.bodyParser())
+server.use(restify.queryParser())
 server.use(restify.authorizationParser())
 
 const books = require('./modules/books.js')
@@ -15,6 +16,7 @@ server.get('/', (req, res, next) => {
 
 // collection used for searching for books. Requires a 'q' parameter
 server.get('/books', (req, res) => {
+  console.log(req.params)
   books.search(req, data => {
     res.setHeader('content-type', data.contentType)
     res.send(data.code, data.response)
