@@ -41,7 +41,7 @@ describe("Search for a book", () => {
 		})
 	})
 	
-	xit('search with a missing query', done => {
+	it('search with a missing query', done => {
 		setData('missing.json')
 		const req = {params:{}}
 		expect(req).toBeUndefined()
