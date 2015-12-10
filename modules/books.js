@@ -17,7 +17,10 @@ exports.search = (request, callback) => {
 			callback({code: 404, contentType: 'application/json', response: 'No Books Found'})
 			return
 		}
-		callback({code: 200, contentType: 'application/json', response: data})
+		var results = data.items.map( item => {
+			return {title: item.volumeInfo.title, link: 'http://xxxx/books/'+item.id}
+		})
+		callback({code: 200, contentType: 'application/json', response: results})
 	})
 }
 
