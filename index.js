@@ -16,7 +16,6 @@ server.get('/', (req, res, next) => {
 
 // collection used for searching for books. Requires a 'q' parameter
 server.get('/books', (req, res) => {
-  console.log(req._url)
   books.search(req, data => {
     res.setHeader('content-type', data.contentType)
     res.send(data.code, data.response)
