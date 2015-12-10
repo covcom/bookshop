@@ -4,6 +4,11 @@
 const request = require('request')
 
 exports.search = (request, callback) => {
+	if (request == undefined || request.params == undefined|| request.params.q == undefined) {
+		console.log('undefined query')
+		callback({code: 400, contentType: 'application/json', response: 'Missing Query Parameter'})
+		return
+	}
 	apiCall(request.params.q, (err, data) => {
 		if (err) {
 			callback({code: 404, contentType: 'application/json', response: err})
