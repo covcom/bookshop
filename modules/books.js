@@ -18,9 +18,10 @@ exports.search = (request, callback) => {
 			callback({code: 404, contentType: 'application/json', response: 'No Books Found'})
 			return
 		}
-		const test = (request.isSecure() ? 'https':'http')
+		//const test = (request.isSecure() ? 'https':'http')
+		const protocol = request.headers['x-forwarded-proto'] || 'http'
 		var results = data.items.map( item => {
-			return {title: item.volumeInfo.title, link: test+'://'+request.headers.host+'/books/'+item.id}
+			return {title: item.volumeInfo.title, link: protocol+'://'+request.headers.host+'/books/'+item.id}
 		})
 		callback({code: 200, contentType: 'application/json', response: results})
 	})
@@ -38,7 +39,7 @@ var apiCall = (search, callback) => {
 }
 
 function getBaseURL(request) {
-	console.log(request.headers)
+	console.log('protocol: '+request.headers['x-forwarded-proto'])
 	let protocol = 'http'
 	if(request.isSecure()) {
 		protocol = 'https'
