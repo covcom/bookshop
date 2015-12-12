@@ -37,9 +37,3 @@ var apiCall = (search, callback) => {
 		callback(null, data)
 	})
 }
-
-function getBaseURL(request) {
-	let protocol = request.headers['x-forwarded-proto'] || 'http'
-	const url = protocol+'://'+request.headers.host
-	return url
-}
