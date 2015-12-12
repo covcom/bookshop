@@ -5,7 +5,6 @@ var rewire = require('rewire')
 var books = rewire("../modules/books")
 
 function setData(file) {
-	console.log(file)
 	books.__set__('apiCall', (search, callback) => {
 		const data = fs.readFileSync('spec/data/'+file, "utf8")
 		callback(null, JSON.parse(data))
@@ -20,7 +19,7 @@ describe("Search for a book", () => {
 		books.search(req, data => {
 			expect(data.code).toEqual(200)
 			expect(data.contentType).toEqual('application/json')
-			const books = data.response.items
+			const books = data.response
 			expect(books).toBeDefined()
 			expect(books.length).toBe(3)
 			done()
