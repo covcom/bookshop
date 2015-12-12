@@ -4,9 +4,7 @@
 const request = require('request')
 
 exports.search = (request, callback) => {
-	getBaseURL(request)
-	if (request == undefined || request.params == undefined|| request.params.q == undefined) {
-		console.log('undefined query')
+	if (request == undefined || request.params == undefined || request.params.q == undefined) {
 		callback({code: 400, contentType: 'application/json', response: 'Missing Query Parameter'})
 		return
 	}
@@ -18,7 +16,6 @@ exports.search = (request, callback) => {
 			callback({code: 404, contentType: 'application/json', response: 'No Books Found'})
 			return
 		}
-		//const test = (request.isSecure() ? 'https':'http')
 		const protocol = request.headers['x-forwarded-proto'] || 'http'
 		var results = data.items.map( item => {
 			return {title: item.volumeInfo.title, link: protocol+'://'+request.headers.host+'/books/'+item.id}
