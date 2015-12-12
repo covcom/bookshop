@@ -16,7 +16,7 @@ describe("Search for a book", () => {
 	
 	it('search for a recognised topic', done => {
 		setData('javascript.json')
-		const req = {params:{q:'javascript'}}
+		const req = {params:{q:'javascript'}, headers: {['x-forwarded-proto']: 'https'}}
 		books.search(req, data => {
 			expect(data.code).toEqual(200)
 			expect(data.contentType).toEqual('application/json')
@@ -29,7 +29,7 @@ describe("Search for a book", () => {
 	
 	it('search for an unknown topic', done => {
 		setData('unknown.json')
-		const req = {params:{q:'dgfuhalgux'}}
+		const req = {params:{q:'dgfuhalgux'}, headers: {['x-forwarded-proto']: 'https'}}
 		books.search(req, data => {
 			expect(data.code).toEqual(404)
 			expect(data.contentType).toEqual('application/json')
@@ -40,7 +40,7 @@ describe("Search for a book", () => {
 	
 	it('search with a missing query', done => {
 		setData('missing.json')
-		const req = {params:{}}
+		const req = {params:{}, headers: {['x-forwarded-proto']: 'https'}}
 		books.search(req.params.q, data => {
 			expect(data.code).toEqual(400)
 			expect(data.contentType).toEqual('application/json')

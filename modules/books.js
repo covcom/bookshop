@@ -39,7 +39,8 @@ var apiCall = (search, callback) => {
 }
 
 function getBaseURL(request) {
-	console.log('protocol: '+request.headers['x-forwarded-proto'])
+	console.log('x-forwarded-protocol: '+request.headers['x-forwarded-proto'])
+	console.log('isSecure(): '+request.isSecure())
 	let protocol = 'http'
 	if(request.isSecure()) {
 		protocol = 'https'
