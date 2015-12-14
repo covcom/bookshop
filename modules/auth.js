@@ -22,7 +22,7 @@ exports.createAccount = (username, password) => {
 
 exports.logIn = (username, password) => {
 	if (storage.getItemSync(username) === undefined) {
-		throw new Error('account '+username+' does not exist exists')
+		throw new Error('account '+username+' does not exist')
 	}
 	const account = storage.getItemSync(username)
 	if (!bcrypt.compareSync(password, account.hash)) {
