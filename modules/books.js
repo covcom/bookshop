@@ -3,24 +3,28 @@
 
 const request = require('request')
 
-exports.search = (request, callback) => {
-	if (request == undefined || request.params == undefined || request.params.q == undefined) {
-		callback({code: 400, contentType: 'application/json', response: 'Missing Query Parameter'})
+exports.search = (query, host, callback) => {
+	if (query == undefined || query.length === 0) {
+		callback( new Error('Missing Query Parameter'))
 		return
 	}
-	apiCall(request.params.q, (err, data) => {
+	const protocolRegex = /(http(s?))\:\/\//gi
+	if (!protocolRegex.test(host)) {
+		callback(new Error('Missing Host Parameter'))
+		return
+	}
+	apiCall(query, (err, data) => {
 		if (err) {
-			callback({code: 404, contentType: 'application/json', response: err})
+			callback( new Error(err))
 		}
 		if (data.items == undefined) {
-			callback({code: 404, contentType: 'application/json', response: 'No Books Found'})
+			callback( new Error('No Books Found'))
 			return
 		}
-		const protocol = request.headers['x-forwarded-proto'] || 'http'
 		var results = data.items.map( item => {
-			return {title: item.volumeInfo.title, link: protocol+'://'+request.headers.host+'/books/'+item.id}
+			return {title: item.volumeInfo.title, link: host+'/books/'+item.id}
 		})
-		callback({code: 200, contentType: 'application/json', response: results})
+		callback(null, results)
 	})
 }
 

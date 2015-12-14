@@ -15,35 +15,58 @@ describe("Search for a book", () => {
 	
 	it('search for a recognised topic', done => {
 		setData('javascript.json')
-		const req = {params:{q:'javascript'}, headers: {['x-forwarded-proto']: 'https'}}
-		books.search(req, data => {
-			expect(data.code).toEqual(200)
-			expect(data.contentType).toEqual('application/json')
-			const books = data.response
-			expect(books).toBeDefined()
-			expect(books.length).toBe(3)
+		books.search('javascript', 'http://example.com', (err, data) => {
+			console.log(JSON.stringify(data, null, 2))
+			expect(err).toBeNull()
+			expect(data).toBeDefined()
+			expect(data.length).toBe(3)
+			expect(data[0].title).toBe('Eloquent JavaScript, 2nd Ed.')
+			expect(data[0].link).toContain('http://example.com/books/')
 			done()
 		})
 	})
 	
 	it('search for an unknown topic', done => {
 		setData('unknown.json')
-		const req = {params:{q:'dgfuhalgux'}, headers: {['x-forwarded-proto']: 'https'}}
-		books.search(req, data => {
-			expect(data.code).toEqual(404)
-			expect(data.contentType).toEqual('application/json')
-			expect(data.response).toEqual('No Books Found')
+		books.search('dgfuhalgux', 'http://example.com', (err, data) => {
+			expect(err).toBeDefined()
+			expect(err.message).toEqual('No Books Found')
 			done()
 		})
 	})
 	
 	it('search with a missing query', done => {
 		setData('missing.json')
-		const req = {params:{}, headers: {['x-forwarded-proto']: 'https'}}
-		books.search(req.params.q, data => {
-			expect(data.code).toEqual(400)
-			expect(data.contentType).toEqual('application/json')
-			expect(data.response).toEqual('Missing Query Parameter')
+		books.search('', 'http://example.com', (err, data) => {
+			expect(err).toBeDefined()
+			expect(err.message).toEqual('Missing Query Parameter')
+			done()
+		})
+	})
+
+	it('search with a null query', done => {
+		setData('missing.json')
+		books.search(null, 'http://example.com', (err, data) => {
+			expect(err).toBeDefined()
+			expect(err.message).toEqual('Missing Query Parameter')
+			done()
+		})
+	})
+	
+	it('search with missing domain parameter', done => {
+		setData('javascript.json')
+		books.search('javascript', '', (err, data) => {
+			expect(err).toBeDefined()
+			expect(err.message).toEqual('Missing Host Parameter')
+			done()
+		})
+	})
+	
+	it('search with null domain parameter', done => {
+		setData('javascript.json')
+		books.search('javascript', '', (err, data) => {
+			expect(err).toBeDefined()
+			expect(err.message).toEqual('Missing Host Parameter')
 			done()
 		})
 	})
