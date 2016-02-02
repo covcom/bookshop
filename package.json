@@ -25,6 +25,7 @@
   },
   "homepage": "https://github.com/covcom/bookshop#readme",
   "dependencies": {
+    "bcrypt": "^0.8.5",
     "node-persist": "0.0.8",
     "request": "^2.67.0",
     "restify": "^4.0.3"
@@ -33,7 +34,6 @@
     "node": "5.1.0"
   },
   "devDependencies": {
-    "bcrypt": "^0.8.5",
     "istanbul": "^0.4.1",
     "jasmine-node": "^1.14.5",
     "rewire": "^2.5.1"
