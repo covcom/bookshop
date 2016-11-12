@@ -27,6 +27,7 @@
   "dependencies": {
     "bcrypt": "^0.8.5",
     "node-persist": "0.0.8",
+    "mongoose": "^4.6.7",
     "request": "^2.67.0",
     "restify": "^4.0.3"
   },

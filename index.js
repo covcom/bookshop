@@ -1,4 +1,5 @@
-"use strict"
+
+'use strict'
 
 const restify = require('restify')
 const server = restify.createServer()
@@ -8,26 +9,49 @@ server.use(restify.bodyParser())
 server.use(restify.queryParser())
 server.use(restify.authorizationParser())
 
-const books = require('./modules/books.js')
+const bookshop = require('./bookshop.js')
+const status = {
+	ok: 200,
+	added: 201,
+	badRequest: 400
+}
+const defaultPort = 8080
 
 server.get('/', (req, res, next) => {
 	res.redirect('/books', next)
 })
 
-// collection used for searching for books. Requires a 'q' parameter
 server.get('/books', (req, res) => {
-  books.search(req, data => {
-    res.setHeader('content-type', data.contentType)
-    res.send(data.code, data.response)
-    res.end()
-  })
+	bookshop.search(req, (err, data) => {
+		res.setHeader('content-type', 'application/json')
+		res.setHeader('accepts', 'GET')
+		if (err) {
+			res.send(status.badRequest, {error: err.message})
+		} else {
+			res.send(status.ok, data)
+		}
+		res.end()
+	})
 })
 
-const port = process.env.PORT || 8080;
+server.post('/cart', (req, res) => {
+	bookshop.addToCart(req, (err, data) => {
+		res.setHeader('content-type', 'application/json')
+		res.setHeader('accepts', 'GET')
+		if (err) {
+			res.send(status.badRequest, {error: err.message})
+		} else {
+			res.send(status.added, {book: data})
+		}
+	})
+})
+
+const port = process.env.PORT || defaultPort
+
 server.listen(port, err => {
-  if (err) {
-      console.error(err)
-  } else {
-    console.log('App is ready at : ' + port)
-  }
+	if (err) {
+		console.error(err)
+	} else {
+		console.log('App is ready at : ' + port)
+	}
 })
