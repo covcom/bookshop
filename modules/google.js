@@ -48,10 +48,12 @@ exports.getByID = id => new Promise( (resolve, reject) => {
 			console.log('no results')
 			reject(Error('book not found'))
 		}
+		//console.log(JSON.stringify(json, null, 2))
 		const data = {
-			title: `${json.items[0].volumeInfo.title}: ${json.items[0].volumeInfo.subtitle}`,
-			authors: json.items[0].volumeInfo.authors[0],
-			description: json.items[0].volumeInfo.description
+			title: `${json.volumeInfo.title}: ${json.volumeInfo.subtitle}`,
+			authors: json.volumeInfo.authors[0],
+			description: json.volumeInfo.description.replace(/<(.|\n)*?>/g, ''),
+			bookID: id
 		}
 
 		resolve(data)

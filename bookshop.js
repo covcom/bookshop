@@ -23,7 +23,7 @@ exports.search = (request, callback) => {
 	})
 }
 
-exports.addToCart = (request, callback) => {
+exports.addToCartOld = (request, callback) => {
 	extractBodyKey(request, 'id').then( id => {
 		return google.getByID(id)
 	}).then( book => {
@@ -31,6 +31,40 @@ exports.addToCart = (request, callback) => {
 	}).catch( err => {
 		callback(err)
 	})
+}
+
+exports.addToCart = (request, callback) => {
+	auth.getHeaderCredentials(request).then( credentials => {
+		this.username = credentials.username
+		this.password = credentials.password
+		return auth.hashPassword(credentials)
+	}).then( credentials => {
+		return persistence.getCredentials(credentials)
+	}).then( account => {
+		const hash = account[0].password
+		return auth.checkPassword(this.password, hash)
+	}).then( () => {
+		return extractBodyKey(request, 'id')
+	}).then( id => {
+		this.id = id
+		return google.getByID(id)
+	}).then( (book) => {
+		this.book = book
+		return persistence.bookExists(this.username, this.id)
+	}).then( book => {
+		console.log('8')
+		this.book.account = this.username
+		return persistence.saveBook(this.book)
+	}).then( book => {
+		delete book.account
+		callback(null, book)
+	}).catch( err => {
+		callback(err)
+	})
+}
+
+exports.showCart = (request, callback) => {
+
 }
 
 exports.addUser = (request, callback) => {

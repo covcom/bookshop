@@ -2,8 +2,6 @@
 'use strict'
 
 const schema = require('../schema/schema')
-//const Book = require('../schema/bookSchema')
-//const User = require('../schema/userSchema')
 
 exports.saveBook = bookDetails => new Promise( (resolve, reject) => {
 	if (!'title' in bookDetails && !'authors' in bookDetails && !'description' in bookDetails) {
@@ -47,6 +45,28 @@ exports.accountExists = account => new Promise( (resolve, reject) => {
 	schema.User.find({username: account.username}, (err, docs) => {
 		console.log(`found ${docs.length} matching accounts`)
 		if (docs.length) reject(new Error(`username already exists`))
+		resolve()
+	})
+})
+
+exports.getCredentials = credentials => new Promise( (resolve, reject) => {
+	console.log('in getCredentials')
+	console.log(credentials)
+	schema.User.find({username: credentials.username}, (err, docs) => {
+		if (err) reject(new Error('database error'))
+		console.log(`found ${docs.length} accounts that match the username`)
+		console.log(docs)
+		if (docs.length) resolve(docs)
+		reject(new Error(`invalid username`))
+	})
+})
+
+exports.bookExists = (username, book) => new Promise( (resolve, reject) => {
+	console.log('in bookExists')
+	console.log(`username: ${username}, book: ${book}`)
+	schema.Book.find({account: username, bookID: book}, (err, docs) => {
+		if (err) reject(new Error('database error'))
+		if (docs.length) reject(new Error('book already in cart'))
 		resolve()
 	})
 })
