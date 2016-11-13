@@ -21,6 +21,11 @@ server.get('/', (req, res, next) => {
 	res.redirect('/books', next)
 })
 
+/**
+ * @api {get} /books Request a list of available books
+ * @apiGroup Books
+ * @apiParam {String} q Query string
+ */
 server.get('/books', (req, res) => {
 	bookshop.search(req, (err, data) => {
 		res.setHeader('content-type', 'application/json')
@@ -42,6 +47,17 @@ server.post('/cart', (req, res) => {
 			res.send(status.badRequest, {error: err.message})
 		} else {
 			res.send(status.added, {book: data})
+		}
+		res.end()
+	})
+})
+
+server.post('/accounts', (req, res) => {
+	bookshop.addUser(req, (err, data) => {
+		if (err) {
+			res.send(status.badRequest, {error: err.message})
+		} else {
+			res.send(status.added, {user: data})
 		}
 	})
 })

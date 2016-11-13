@@ -1,6 +1,7 @@
 
 'use strict'
 
+const auth = require('./modules/authorisation')
 const google = require('./modules/google')
 const persistence = require('./modules/persistence')
 
@@ -27,6 +28,30 @@ exports.addToCart = (request, callback) => {
 		return google.getByID(id)
 	}).then( book => {
 		return persistence.saveBook(book)
+	}).catch( err => {
+		callback(err)
+	})
+}
+
+exports.addUser = (request, callback) => {
+	let data
+	auth.getHeaderCredentials(request).then( credentials => {
+		console.log(`username: ${credentials.username}  password: ${credentials.password}`)
+		return auth.hashPassword(credentials)
+	}).then( credentials => {
+		console.log(`username: ${credentials.username}  password: ${credentials.password}`)
+		data = credentials
+		return persistence.accountExists(credentials)
+	}).then( () => {
+		return extractBodyKey(request, 'name')
+	}).then( name => {
+		data.name = name
+		console.log(data)
+		return persistence.addAccount(data)
+	}).then( data => {
+		console.log('account now saved')
+		console.log(data)
+		callback(null, data)
 	}).catch( err => {
 		callback(err)
 	})
