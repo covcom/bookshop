@@ -6,20 +6,20 @@ const schema = require('../schema/schema')
 //const User = require('../schema/userSchema')
 
 exports.saveBook = bookDetails => new Promise( (resolve, reject) => {
-	if ('title' in bookDetails && 'authors' in bookDetails && 'description' in bookDetails) {
-		console.log('saving the book')
-		const book = new schema.Book(bookDetails)
-
-		book.save( (err, book) => {
-			console.log('attempt made')
-			if (err) {
-				reject(new Error('an error saving book'))
-			}
-			console.log('book added')
-			resolve(book)
-		})
+	if (!'title' in bookDetails && !'authors' in bookDetails && !'description' in bookDetails) {
+		reject(new Error('invalid book object'))
 	}
-	reject(new Error('invalid book object'))
+	console.log('saving the book')
+	const book = new schema.Book(bookDetails)
+
+	book.save( (err, book) => {
+		console.log('attempt made')
+		if (err) {
+			reject(new Error('an error saving book'))
+		}
+		console.log('book added')
+		resolve(book)
+	})
 })
 
 exports.addAccount = details => new Promise( (resolve, reject) => {
