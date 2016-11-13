@@ -22,7 +22,6 @@ exports.hashPassword = credentials => new Promise( (resolve, reject) => {
 })
 
 exports.checkPassword = (provided, stored) => new Promise( (resolve, reject) => {
-  console.log(`provided: ${provided}, stored: ${stored}`)
   if (!bcrypt.compareSync(provided, stored)) {
 		reject(new Error('invalid password'))
 	}

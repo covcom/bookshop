@@ -11,7 +11,6 @@ exports.searchByString = query => new Promise( (resolve, reject) => {
 			reject(Error('failed to make API call'))
 		}
 		const data = JSON.parse(body)
-		console.log(data) //this prints results...
 		resolve(data)
 	})
 })
@@ -24,7 +23,6 @@ exports.getByISBN = isbn => new Promise( (resolve, reject) => {
 		const json = JSON.parse(body)
 
 		if (json.totalItems === 0) {
-			console.log('no results')
 			reject(Error('book not found'))
 		}
 		const data = {
@@ -45,7 +43,6 @@ exports.getByID = id => new Promise( (resolve, reject) => {
 		const json = JSON.parse(body)
 
 		if (json.totalItems === 0) {
-			console.log('no results')
 			reject(Error('book not found'))
 		}
 		const data = {

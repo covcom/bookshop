@@ -53,18 +53,14 @@ server.post('/cart', (req, res) => {
 })
 
 server.get('/cart', (req, res) => {
-	console.log('A')
 	bookshop.showCart(req, (err, data) => {
 		res.setHeader('content-type', 'application/json')
 		res.setHeader('accepts', 'GET, POST')
 		if (err) {
-			console.log('B')
 			res.send(status.badRequest, {error: err.message})
 		} else {
-			console.log('C')
 			res.send(status.ok, data)
 		}
-		console.log('D')
 		res.end()
 	})
 })

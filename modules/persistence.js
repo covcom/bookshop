@@ -33,9 +33,7 @@ exports.addAccount = details => new Promise( (resolve, reject) => {
 })
 
 exports.accountExists = account => new Promise( (resolve, reject) => {
-	console.log(account.username)
 	schema.User.find({username: account.username}, (err, docs) => {
-		console.log(`found ${docs.length} matching accounts`)
 		if (docs.length) reject(new Error(`username already exists`))
 		resolve()
 	})
@@ -58,7 +56,6 @@ exports.bookExists = (username, book) => new Promise( (resolve, reject) => {
 })
 
 exports.getBooksInCart = user => new Promise( (resolve, reject) => {
-	console.log(`user: ${user}`)
 	schema.Book.find({account: user}, (err, docs) => {
 		if (err) reject(new Error('database error'))
 		if (!docs.length) reject(new Error('shopping cart empty'))
