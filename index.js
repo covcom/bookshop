@@ -42,7 +42,7 @@ server.get('/books', (req, res) => {
 server.post('/cart', (req, res) => {
 	bookshop.addToCart(req, (err, data) => {
 		res.setHeader('content-type', 'application/json')
-		res.setHeader('accepts', 'GET')
+		res.setHeader('accepts', 'GET, POST')
 		if (err) {
 			res.send(status.badRequest, {error: err.message})
 		} else {
@@ -52,13 +52,33 @@ server.post('/cart', (req, res) => {
 	})
 })
 
+server.get('/cart', (req, res) => {
+	console.log('A')
+	bookshop.showCart(req, (err, data) => {
+		res.setHeader('content-type', 'application/json')
+		res.setHeader('accepts', 'GET, POST')
+		if (err) {
+			console.log('B')
+			res.send(status.badRequest, {error: err.message})
+		} else {
+			console.log('C')
+			res.send(status.ok, data)
+		}
+		console.log('D')
+		res.end()
+	})
+})
+
 server.post('/accounts', (req, res) => {
 	bookshop.addUser(req, (err, data) => {
+		res.setHeader('content-type', 'application/json')
+		res.setHeader('accepts', 'GET, POST')
 		if (err) {
 			res.send(status.badRequest, {error: err.message})
 		} else {
 			res.send(status.added, {user: data})
 		}
+		res.end()
 	})
 })
 

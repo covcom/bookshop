@@ -56,3 +56,12 @@ exports.bookExists = (username, book) => new Promise( (resolve, reject) => {
 		resolve()
 	})
 })
+
+exports.getBooksInCart = user => new Promise( (resolve, reject) => {
+	console.log(`user: ${user}`)
+	schema.Book.find({account: user}, (err, docs) => {
+		if (err) reject(new Error('database error'))
+		if (!docs.length) reject(new Error('shopping cart empty'))
+		resolve(docs)
+	})
+})

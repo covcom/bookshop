@@ -63,7 +63,33 @@ exports.addToCart = (request, callback) => {
 }
 
 exports.showCart = (request, callback) => {
-
+	console.log('1')
+	auth.getHeaderCredentials(request).then( credentials => {
+		console.log('2')
+		this.username = credentials.username
+		this.password = credentials.password
+		console.log(this.username)
+		return auth.hashPassword(credentials)
+	}).then( credentials => {
+		console.log('3')
+		return persistence.getCredentials(credentials)
+	}).then( account => {
+		console.log('4')
+		const hash = account[0].password
+		return auth.checkPassword(this.password, hash)
+	}).then( () => {
+		console.log('5')
+		return persistence.getBooksInCart(this.username)
+	}).then( books => {
+		return this.removeMongoFields(request, books)
+	}).then( books => {
+		console.log('6')
+		console.log(books)
+		callback(null, books)
+	}).catch( err => {
+		console.log('E')
+		callback(err)
+	})
 }
 
 exports.addUser = (request, callback) => {
@@ -109,6 +135,18 @@ exports.cleanArray = (request, data) => new Promise((resolve) => {
 		return {
 			title: element.volumeInfo.title,
 			link: `${host}/books/${element.id}`
+		}
+	})
+
+	resolve({books: clean})
+})
+
+exports.removeMongoFields = (request, data) => new Promise( (resolve, reject) => {
+	const host = request.host || 'http://localhost'
+	const clean = data.map(element => {
+		return {
+			title: element.title,
+			link: `${host}/books/${element.bookID}`
 		}
 	})
 
