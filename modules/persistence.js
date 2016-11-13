@@ -7,15 +7,12 @@ exports.saveBook = bookDetails => new Promise( (resolve, reject) => {
 	if (!'title' in bookDetails && !'authors' in bookDetails && !'description' in bookDetails) {
 		reject(new Error('invalid book object'))
 	}
-	console.log('saving the book')
 	const book = new schema.Book(bookDetails)
 
 	book.save( (err, book) => {
-		console.log('attempt made')
 		if (err) {
 			reject(new Error('an error saving book'))
 		}
-		console.log('book added')
 		resolve(book)
 	})
 })
@@ -24,18 +21,13 @@ exports.addAccount = details => new Promise( (resolve, reject) => {
 	if (!'username' in details && !'password' in details && !'name' in details) {
 		reject(new Error('invalid user object'))
 	}
-	console.log('creating the account')
-	console.log(details)
 	const user = new schema.User(details)
 
 	user.save( (err, user) => {
-		console.log('saving the data')
 		if (err) {
 			reject(new Error('error creating account'))
 		}
-		console.log('account created')
 		delete details.password
-		console.log(details)
 		resolve(details)
 	})
 })
@@ -50,20 +42,14 @@ exports.accountExists = account => new Promise( (resolve, reject) => {
 })
 
 exports.getCredentials = credentials => new Promise( (resolve, reject) => {
-	console.log('in getCredentials')
-	console.log(credentials)
 	schema.User.find({username: credentials.username}, (err, docs) => {
 		if (err) reject(new Error('database error'))
-		console.log(`found ${docs.length} accounts that match the username`)
-		console.log(docs)
 		if (docs.length) resolve(docs)
 		reject(new Error(`invalid username`))
 	})
 })
 
 exports.bookExists = (username, book) => new Promise( (resolve, reject) => {
-	console.log('in bookExists')
-	console.log(`username: ${username}, book: ${book}`)
 	schema.Book.find({account: username, bookID: book}, (err, docs) => {
 		if (err) reject(new Error('database error'))
 		if (docs.length) reject(new Error('book already in cart'))

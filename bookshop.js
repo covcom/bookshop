@@ -52,7 +52,6 @@ exports.addToCart = (request, callback) => {
 		this.book = book
 		return persistence.bookExists(this.username, this.id)
 	}).then( book => {
-		console.log('8')
 		this.book.account = this.username
 		return persistence.saveBook(this.book)
 	}).then( book => {
