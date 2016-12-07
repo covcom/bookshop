@@ -3,12 +3,14 @@
 
 // import the mongoose package
 const mongoose = require('mongoose')
-const db = {
-	user: 'testuser',
-	pass: 'password'
-}
 
-mongoose.connect(`mongodb://${db.user}:${db.pass}@ds147497.mlab.com:47497/bookshop`)
+const username = process.env.MONGO_USER || 'testuser'
+const password = process.env.MONGO_PASS || 'password'
+const host = process.env.MONGO_HOST || 'ds147497.mlab.com'
+const port = process.env.MONGO_PORT || 47497
+const database = process.env.MONGO_DB || 'bookshop'
+
+mongoose.connect(`mongodb://${username}:${password}@${host}:${port}/${database}`)
 mongoose.Promise = global.Promise
 const Schema = mongoose.Schema
 
