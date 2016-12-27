@@ -28,7 +28,8 @@ const bookSchema = new Schema({
 	title: String,
 	authors: String,
 	description: String,
-  bookID: String
+  bookID: String,
+	isbn: String
 })
 
 // create a model using the schema
