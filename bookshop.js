@@ -10,24 +10,42 @@ exports.search = async (request, callback) => {
 	try {
 		const q = await extract.queryString(request, 'q')
 		const result = await google.searchByString(q)
-
 		callback(null, result)
 	} catch(err) {
 		callback(err)
 	}
 }
 
-exports.addToCartOld = (request, callback) => {
-	extractBodyKey(request, 'id').then( id => {
-		return google.getByID(id)
-	}).then( book => {
-		return persistence.saveBook(book)
-	}).catch( err => {
+exports.addUser = async (request, callback) => {
+	try {
+		const credentials = await extract.credentials(request)
+		const data = await auth.hashPassword(credentials)
+		await persistence.accountExists(credentials)
+		data.name = await extract.bodyKey(request, 'name')
+		await persistence.addAccount(data)
+		delete data.password
+		callback(null, data)
+	} catch(err) {
 		callback(err)
-	})
+	}
 }
 
-exports.addToCart = (request, callback) => {
+exports.addToCart = async (request, callback) => {
+	try {
+		const credentials = await extract.credentials(request)
+		const account = await persistence.getAccount(credentials)
+		await auth.checkPassword(credentials.password, account.password)
+		const isbn = await extract.bodyKey(request, 'isbn')
+		const book = await google.ISBNExists(isbn)
+		const summary = await extract.bookSummary(book)
+		await persistence.saveBook(credentials.username, summary)
+		callback(null, summary)
+	} catch(err) {
+		callback(err)
+	}
+}
+
+exports.addToCartOld = (request, callback) => {
 	auth.getHeaderCredentials(request).then( credentials => {
 		this.username = credentials.username
 		this.password = credentials.password
@@ -38,7 +56,7 @@ exports.addToCart = (request, callback) => {
 		const hash = account[0].password
 		return auth.checkPassword(this.password, hash)
 	}).then( () => {
-		return extractBodyKey(request, 'id')
+		return extract.bodyKey(request, 'id')
 	}).then( id => {
 		this.id = id
 		return google.getByID(id)
@@ -77,36 +95,7 @@ exports.showCart = (request, callback) => {
 	})
 }
 
-exports.addUser = (request, callback) => {
-	let data
-	auth.getHeaderCredentials(request).then( credentials => {
-		return auth.hashPassword(credentials)
-	}).then( credentials => {
-		data = credentials
-		return persistence.accountExists(credentials)
-	}).then( () => {
-		return extractBodyKey(request, 'name')
-	}).then( name => {
-		data.name = name
-		return persistence.addAccount(data)
-	}).then( data => {
-		callback(null, data)
-	}).catch( err => {
-		callback(err)
-	})
-}
-
 // ------------------ UTILITY FUNCTIONS ------------------
-
-const extractParam = (request, param) => new Promise( (resolve, reject) => {
-	if (request.params === undefined || request.params[param] === undefined) reject(new Error(`${param} parameter missing`))
-	resolve(request.params[param])
-})
-
-const extractBodyKey = (request, key) => new Promise( (resolve, reject) => {
-	if (request.body === undefined || request.body[key] === undefined) reject(new Error(`missing key ${key} in request body`))
-	resolve(request.body[key])
-})
 
 exports.cleanArray = (request, data) => new Promise((resolve) => {
 	const host = request.host || 'http://localhost'

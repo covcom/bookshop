@@ -1,12 +1,12 @@
 
-'use strict'
-
 const schema = require('../schema/schema')
 
-exports.saveBook = bookDetails => new Promise( (resolve, reject) => {
-	if (!'title' in bookDetails && !'authors' in bookDetails && !'description' in bookDetails) {
+exports.saveBook = (username, bookDetails) => new Promise( (resolve, reject) => {
+	if (!'title' in bookDetails || !'authors' in bookDetails || !'subtitle' in bookDetails) {
 		reject(new Error('invalid book object'))
 	}
+	bookDetails.account = username
+	console.log(JSON.stringify(bookDetails, null, 2))
 	const book = new schema.Book(bookDetails)
 
 	book.save( (err, book) => {
@@ -34,16 +34,22 @@ exports.addAccount = details => new Promise( (resolve, reject) => {
 
 exports.accountExists = account => new Promise( (resolve, reject) => {
 	schema.User.find({username: account.username}, (err, docs) => {
-		if (docs.length) reject(new Error(`username already exists`))
+		if (err) reject(new Error(err))
+		if (docs.length) reject(new Error(`username ${account.username} already exists`))
 		resolve()
 	})
 })
 
-exports.getCredentials = credentials => new Promise( (resolve, reject) => {
-	schema.User.find({username: credentials.username}, (err, docs) => {
+exports.getAccount = credentials => new Promise( (resolve, reject) => {
+	console.log(`username: ${credentials.username}`)
+	schema.User.findOne({username: credentials.username}, (err, account) => {
 		if (err) reject(new Error('database error'))
-		if (docs.length) resolve(docs)
-		reject(new Error(`invalid username`))
+		if (account === null) {
+			console.log('account undefined')
+			reject(new Error(`invalid username '${credentials.username}'`))
+		}
+		console.log(account)
+		resolve(account)
 	})
 })
 
