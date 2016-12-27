@@ -31,6 +31,7 @@
   "homepage": "https://github.com/covcom/bookshop#readme",
   "dependencies": {
     "bcrypt": "^0.8.7",
+    "bcryptjs": "^2.4.0",
     "mongoose": "^4.6.7",
     "node-fetch": "^1.6.3",
     "node-persist": "0.0.8",
