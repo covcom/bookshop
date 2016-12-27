@@ -62,3 +62,10 @@ exports.getBooksInCart = user => new Promise( (resolve, reject) => {
 		resolve(docs)
 	})
 })
+
+exports.clearAccounts = () => new Promise( (resolve, reject) => {
+	schema.User.remove({}, err => {
+		if (err) reject(new Error('database error'))
+		resolve()
+	})
+})

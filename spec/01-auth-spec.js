@@ -1,22 +1,26 @@
 
-"use strict"
+'use strict'
 
-var fs = require('fs')
-var rewire = require('rewire')
+const fs = require('fs')
+const schema = require('../schema/schema')
 
-var auth = rewire("../modules/auth")
+const auth = require('../modules/authorisation')
 
 describe('Auth Model', () => {
-	
-	beforeEach( () => {
-		auth.clearAccounts()
+
+	beforeEach( done => {
+		schema.User.remove({}, err => {
+			if (err) fail('could not remove accounts')
+			done()
+		})
 	})
-	
+
 	describe('create accounts', () => {
-	
+
 		it('create a single valid account', () => {
 			try {
-				let user = auth.createAccount('testuser', 'p455w0rd')
+				const user = auth.createAccount('testuser', 'p455w0rd')
+
 				expect(user).toEqual({status: 'success', username: 'testuser'})
 			} catch(err) {
 				fail('error should not be thrown')
@@ -24,10 +28,11 @@ describe('Auth Model', () => {
 				expect(auth.count).toBe(1)
 			}
 		})
-	
+
 		it('create a user with a different username/password', () => {
 			try {
-				let user = auth.createAccount('testuser2', 'password')
+				const user = auth.createAccount('testuser2', 'password')
+
 				expect(user).toEqual({status: 'success', username: 'testuser2'})
 			} catch(err) {
 				fail('error should not be thrown')
@@ -35,7 +40,7 @@ describe('Auth Model', () => {
 				expect(auth.count).toBe(1)
 			}
 		})
-	
+
 		it('should prevent duplicate usernames  from being inserted', () => {
 			try {
 				auth.createAccount('testuser', 'p455w0rd')
@@ -47,7 +52,7 @@ describe('Auth Model', () => {
 				expect(auth.count).toBe(1)
 			}
 		})
-	
+
 		it('should throw an error if missing username', () => {
 			try {
 				auth.createAccount('testuser', 'p455w0rd')
@@ -59,7 +64,7 @@ describe('Auth Model', () => {
 			}
 		})
 	})
-	
+
 	describe('Log In', () => {
 		it('should allow registered user to login', () => {
 			try {
@@ -71,7 +76,7 @@ describe('Auth Model', () => {
 				fail('error should not be thrown')
 			}
 		})
-	
+
 		it('should prevent unregistered user from logging in', () => {
 			try {
 				auth.createAccount('testuser', 'p455w0rd')
@@ -81,7 +86,7 @@ describe('Auth Model', () => {
 				expect(err.message).toBe('account testuser2 does not exist')
 			}
 		})
-	
+
 		it('should prevent invalid password being accepted', () => {
 			try {
 				auth.createAccount('testuser', 'p455w0rd')
@@ -90,7 +95,7 @@ describe('Auth Model', () => {
 			} catch(err) {
 				expect(err.message).toBe('invalid password')
 			}
-		})	
+		})
 	})
 
 })
