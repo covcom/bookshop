@@ -1,0 +1,9 @@
+
+{
+	"spec_files": [
+		"spec/01-auth-spec.js"
+	],
+	"helpers": [
+		"helpers/**/*.js"
+	]
+}
