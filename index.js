@@ -46,7 +46,6 @@ server.post('/cart', (req, res) => {
 		if (err) {
 			res.send(status.badRequest, {error: err.message})
 		} else {
-			
 			res.send(status.added, {book: data})
 		}
 		res.end()

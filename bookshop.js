@@ -1,22 +1,20 @@
 
-'use strict'
-
 const auth = require('./modules/authorisation')
+const extract = require('./modules/dataExtractor')
 const google = require('./modules/google')
 const persistence = require('./modules/persistence')
 
-// ------------------ ROUTE FUNCTIONS ------------------ 
+// ------------------ ROUTE FUNCTIONS ------------------
 
-exports.search = (request, callback) => {
-	extractParam(request, 'q').then( query => {
-		return google.searchByString(query)
-	}).then( data => {
-		return this.cleanArray(request, data)
-	}).then( data => {
-		callback(null, data)
-	}).catch( err => {
+exports.search = async (request, callback) => {
+	try {
+		const q = await extract.queryString(request, 'q')
+		const result = await google.searchByString(q)
+
+		callback(null, result)
+	} catch(err) {
 		callback(err)
-	})
+	}
 }
 
 exports.addToCartOld = (request, callback) => {
