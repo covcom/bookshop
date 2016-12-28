@@ -1,6 +1,4 @@
 
-'use strict'
-
 const Jasmine = require('jasmine')
 const jasmine = new Jasmine()
 
@@ -10,7 +8,7 @@ const JasmineConsoleReporter = require('jasmine-console-reporter')
 const reporter = new JasmineConsoleReporter({
 	colors: true,
 	cleanStack: true,
-	verbosity: 1,
+	verbosity: 4,
 	listStyle: 'indent',
 	activity: true
 })

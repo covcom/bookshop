@@ -1,4 +1,7 @@
 verbose: false
+instrumentation:
+    excludes: ['**/spec/**', '**index.js**', '**/node_modules/**', '**/docs/**', '**jasmine.js**']
+    #include-all-sources: true
 reporting:
     print: summary
     reports:

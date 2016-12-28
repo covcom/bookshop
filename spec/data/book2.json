@@ -1,0 +1,24 @@
+{
+  "items": [
+    {
+      "id": "fM2o_u6uosUC",
+      "volumeInfo": {
+        "title": "Webmaster in a Nutshell",
+        "authors": [
+          "Stephen Spainhour",
+          "Robert Eckstein"
+        ],
+        "industryIdentifiers": [
+          {
+            "type": "ISBN_10",
+            "identifier": "0596003579"
+          },
+          {
+            "type": "ISBN_13",
+            "identifier": "9780596003579"
+          }
+        ]
+      }
+    }
+  ]
+}

@@ -1,0 +1,15 @@
+
+{
+  "authorization": {
+    "basic": {
+      "username": "testuser",
+      "password": "password"
+    }
+  },
+  "params": {
+    "q": "javascript"
+  },
+  "body": {
+    "isbn": "0596805527"
+  }
+}

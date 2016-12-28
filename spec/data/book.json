@@ -1,0 +1,24 @@
+{
+  "items": [
+    {
+      "id": "4RChxt67lvwC",
+      "volumeInfo": {
+        "title": "JavaScript",
+        "subtitle": "The Definitive Guide",
+        "authors": [
+          "David Flanagan"
+        ],
+        "industryIdentifiers": [
+          {
+            "type": "ISBN_13",
+            "identifier": "9780596805524"
+          },
+          {
+            "type": "ISBN_10",
+            "identifier": "0596805527"
+          }
+        ]
+      }
+    }
+  ]
+}
