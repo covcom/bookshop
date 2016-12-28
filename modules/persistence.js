@@ -8,7 +8,6 @@ exports.saveBook = (username, bookDetails) => new Promise( (resolve, reject) => 
 	bookDetails.account = username
 	console.log(JSON.stringify(bookDetails, null, 2))
 	const book = new schema.Book(bookDetails)
-
 	book.save( (err, book) => {
 		if (err) {
 			reject(new Error('an error saving book'))
@@ -22,8 +21,7 @@ exports.addAccount = details => new Promise( (resolve, reject) => {
 		reject(new Error('invalid user object'))
 	}
 	const user = new schema.User(details)
-
-	user.save( (err, user) => {
+	user.save( err => {
 		if (err) {
 			reject(new Error('error creating account'))
 		}
@@ -65,7 +63,8 @@ exports.getBooksInCart = user => new Promise( (resolve, reject) => {
 	schema.Book.find({account: user}, (err, docs) => {
 		if (err) reject(new Error('database error'))
 		if (!docs.length) reject(new Error('shopping cart empty'))
-		resolve(docs)
+		const books = docs.map( element => ({isbn: element.isbn, title: element.title, subtitle: element.subtitle}))
+		resolve({books: books})
 	})
 })
 

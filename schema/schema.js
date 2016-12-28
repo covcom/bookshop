@@ -24,11 +24,11 @@ exports.User = mongoose.model('User', userSchema)
 
 // create a schema
 const bookSchema = new Schema({
-  account: String,
+	account: String,
 	title: String,
+	subtitle: String,
 	authors: String,
-	description: String,
-  bookID: String,
+	bookID: String,
 	isbn: String
 })
 

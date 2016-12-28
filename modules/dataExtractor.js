@@ -1,7 +1,7 @@
 
 exports.queryString = (request, param) => new Promise( (resolve, reject) => {
 	if(request === undefined || request.params === undefined || request.params[param] === undefined) {
-		reject(new Error(`missing query string "${param}"`))
+		reject(new Error(`missing query string '${param}'`))
 	}
 	resolve(request.params[param])
 })
