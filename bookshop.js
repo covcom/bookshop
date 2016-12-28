@@ -37,6 +37,7 @@ exports.addToCart = async (request, callback) => {
 		await auth.checkPassword(credentials.password, account.password)
 		const isbn = await extract.bodyKey(request, 'isbn')
 		const book = await google.ISBNExists(isbn)
+		await persistence.bookExists(credentials.username, isbn)
 		const summary = await extract.bookSummary(book)
 		await persistence.saveBook(credentials.username, summary)
 		callback(null, summary)

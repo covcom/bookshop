@@ -51,8 +51,8 @@ exports.getAccount = credentials => new Promise( (resolve, reject) => {
 	})
 })
 
-exports.bookExists = (username, book) => new Promise( (resolve, reject) => {
-	schema.Book.find({account: username, bookID: book}, (err, docs) => {
+exports.bookExists = (username, isbn) => new Promise( (resolve, reject) => {
+	schema.Book.find({account: username, isbn: isbn}, (err, docs) => {
 		if (err) reject(new Error('database error'))
 		if (docs.length) reject(new Error('book already in cart'))
 		resolve()
