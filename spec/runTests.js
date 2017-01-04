@@ -2,7 +2,7 @@
 const Jasmine = require('jasmine')
 const jasmine = new Jasmine()
 
-jasmine.loadConfigFile('jasmine.json')
+jasmine.loadConfigFile('spec/jasmine.json')
 
 const JasmineConsoleReporter = require('jasmine-console-reporter')
 const reporter = new JasmineConsoleReporter({

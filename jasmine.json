@@ -1,9 +1,0 @@
-
-{
-	"spec_files": [
-		"spec/dataExtractor-spec.js"
-	],
-	"helpers": [
-		"helpers/**/*.js"
-	]
-}

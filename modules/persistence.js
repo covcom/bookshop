@@ -1,4 +1,9 @@
 
+/**
+ * Persistence Module.
+ * @module persistence
+ */
+
 const schema = require('../schema/schema')
 
 exports.saveBook = (username, bookDetails) => new Promise( (resolve, reject) => {
@@ -65,12 +70,5 @@ exports.getBooksInCart = user => new Promise( (resolve, reject) => {
 		if (!docs.length) reject(new Error('shopping cart empty'))
 		const books = docs.map( element => ({isbn: element.isbn, title: element.title, subtitle: element.subtitle}))
 		resolve({books: books})
-	})
-})
-
-exports.clearAccounts = () => new Promise( (resolve, reject) => {
-	schema.User.remove({}, err => {
-		if (err) reject(new Error('database error'))
-		resolve()
 	})
 })

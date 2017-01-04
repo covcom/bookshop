@@ -1,6 +1,5 @@
 
 const fs = require('jsonfile')
-
 const extractor = require('../modules/dataExtractor')
 
 describe('Extractor Model', () => {
@@ -9,7 +8,7 @@ describe('Extractor Model', () => {
 
 		it('should find the correct querystring', done => {
 			const data = fs.readFileSync('spec/data/request.json')
-			console.log(data)
+			//console.log(data)
 			const result = extractor.queryString(data, 'q')
 			return result.then( data => {
 				expect(data).toBe('javascript')
@@ -68,7 +67,7 @@ describe('Extractor Model', () => {
 				expect(true).toBe(false)
 				done()
 			}).catch( err => {
-				console.log(err.message)
+				//console.log(err.message)
 				expect(err.message).toBe('authorization header missing')
 				done()
 			})
@@ -77,13 +76,13 @@ describe('Extractor Model', () => {
 		it('throws error if missing authorization.basic key', done => {
 			const data = fs.readFileSync('spec/data/request.json')
 			delete data.authorization.basic
-			console.log(data)
+			//console.log(data)
 			const result = extractor.credentials(data)
 			return result.then( () => {
 				expect(true).toBe(false)
 				done()
 			}).catch( err => {
-				console.log(err.message)
+				//console.log(err.message)
 				expect(err.message).toBe('authorization header missing')
 				done()
 			})
@@ -92,13 +91,13 @@ describe('Extractor Model', () => {
 		it('throws error if missing username key', done => {
 			const data = fs.readFileSync('spec/data/request.json')
 			delete data.authorization.basic.username
-			console.log(data)
+			//console.log(data)
 			const result = extractor.credentials(data)
 			return result.then( () => {
 				expect(true).toBe(false)
 				done()
 			}).catch( err => {
-				console.log(err.message)
+				//console.log(err.message)
 				expect(err.message).toBe('missing username / password')
 				done()
 			})
@@ -107,13 +106,13 @@ describe('Extractor Model', () => {
 		it('throws error if missing password key', done => {
 			const data = fs.readFileSync('spec/data/request.json')
 			delete data.authorization.basic.password
-			console.log(data)
+			//console.log(data)
 			const result = extractor.credentials(data)
 			return result.then( () => {
 				expect(true).toBe(false)
 				done()
 			}).catch( err => {
-				console.log(err.message)
+				//console.log(err.message)
 				expect(err.message).toBe('missing username / password')
 				done()
 			})
@@ -125,7 +124,7 @@ describe('Extractor Model', () => {
 
 		it('should find the correct body key', done => {
 			const data = fs.readFileSync('spec/data/request.json')
-			console.log(data)
+			//console.log(data)
 			const result = extractor.bodyKey(data, 'isbn')
 			return result.then( data => {
 				expect(data).toBe('0596805527')
@@ -154,7 +153,7 @@ describe('Extractor Model', () => {
 
 		it('should extract book summary from valid json', done => {
 			const data = fs.readFileSync('spec/data/book.json')
-			console.log(data)
+			//console.log(data)
 			const result = extractor.bookSummary(data)
 			return result.then( book => {
 				expect(book.bookID).toBe('4RChxt67lvwC')
@@ -171,7 +170,7 @@ describe('Extractor Model', () => {
 
 		it('no subtitle, 2 authors and isbn in key 0', done => {
 			const data = fs.readFileSync('spec/data/book2.json')
-			console.log(data)
+			//console.log(data)
 			const result = extractor.bookSummary(data)
 			return result.then( book => {
 				expect(book.bookID).toBe('fM2o_u6uosUC')

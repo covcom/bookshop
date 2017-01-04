@@ -1,5 +1,10 @@
 
 /**
+ * Data Extractor Module.
+ * @module dataExtractor
+ */
+
+/**
  * Extracts the username and password from the request object.
  * @async
  * @param   {object} request - The request object.

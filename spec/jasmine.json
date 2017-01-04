@@ -1,0 +1,12 @@
+
+{
+	"spec_files": [
+		"spec/dataExtractor-spec.js",
+		"spec/authorisation-spec.js",
+		"spec/persistence-spec.js",
+		"spec/google-spec.js"
+	],
+	"helpers": [
+		"helpers/**/*.js"
+	]
+}
