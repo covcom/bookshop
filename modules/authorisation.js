@@ -1,7 +1,7 @@
 
 'use strict'
 
-const bcrypt = require('bcrypt')
+const bcrypt = require('bcryptjs')
 
 exports.getHeaderCredentials = request => new Promise( (resolve, reject) => {
 	if (request.authorization === undefined || request.authorization.basic === undefined) {
